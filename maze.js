@@ -68,6 +68,7 @@ function setup() {
 
 
 function draw() {
+  //setting up the canvas
   background(backgroundColor);
   house.drawHouse();
   drawImages();
@@ -76,12 +77,16 @@ function draw() {
   fill(38, 55, 83);
   person.drawPersonSideView();
   //noStroke();
+  
+  //clearing out previous time and allowance values
   rect(0, 0, 80, 30);
   rect(width - 95, 0, 100, 30);
   fill(0, 0, 0);
   text(`time: ${time}`, 20, 20);
   text(`allowance: $${allowance}`, 310, 20);
   keyPressed();
+  
+  //checking person collisions with each vertical door, if there is a collision then door opens, makes sure that each door is black
   for (let i = 0; i < verticalDoorList.length; i++) {
     //console.log("ee");
     fill(360, 360, 360);
@@ -89,17 +94,20 @@ function draw() {
     verticalDoorList[i].collision();
   }
   
+  //checking person collissions with each horizontal door, if there is a collision then door opens, makes sure that each door is blue
   for (let i = 0; i < horizontalDoorList.length; i++) {
     fill(360, 360, 360);
     horizontalDoorList[i].showSelf();
     horizontalDoorList[i].collision();
   }
   //collisionAssignment();
+  //checks if the person collides with the walls, if it does, can't move past the wall
   lineCollisionVertical();
   lineCollisionHorizontal();
   personCollidingImage();
 }
 
+//class to create the avatar of the game
 class Person {
   constructor(x, y) {
     this.x = x;
@@ -107,6 +115,7 @@ class Person {
     this.width = 10;
     this.height = 10;
   }
+  //draws rectangle and circle to represent the head and body of the avatar
   drawPersonSideView() {
     fill(360, 360, 360);
     rect(this.x, this.y, this.width, this.height);
@@ -118,7 +127,7 @@ class Person {
     fill(360, 360, 360);
     ellipse(this.x, this.y, this.width * 2);
   }
-
+  //how the person moves forward/backwards/upwards/downwards, the previous position is saved
   movePersonForwardsSideView() {
     previousXPerson = this.x;
     this.x += forwardX;
@@ -137,6 +146,7 @@ class Person {
   }
 }
 
+//assigns the up, down, left, and right keys to their appropriate functions
 function keyPressed() {
   //while (time < 5001){
   if (keyIsDown(39)) {
@@ -154,6 +164,7 @@ function keyPressed() {
   //}
 }
 
+//creating the house
 class House {
   constructor() {
     this.x = 10;
@@ -168,6 +179,7 @@ class House {
   }
 }
 
+//adding all of the vertical and horizontal lines on the board to the verticalLineCollisionsList
 function collisionAssignment(){
   verticalLineCollisionsList.push(verticalCollisionLine1);
   verticalLineCollisionsList.push(verticalCollisionLine2);
@@ -201,7 +213,7 @@ function collisionAssignment(){
 }
 
 
-
+//draws all the lines to create the rooms in the house
 function drawRooms() {
   for (let i = 0; i < numberOfFloors; i++) {
     line(0, (height * i) / numberOfFloors, width, (height * i) / numberOfFloors);
@@ -276,7 +288,7 @@ function drawRooms() {
   
   collisionAssignment();
 }
-
+//creating the vertical doors
 class VerticalDoor {
   constructor(x, i) {
     this.x = x;
@@ -289,10 +301,12 @@ class VerticalDoor {
     this.height = person.height;
     this.color = 230;
   }
+  //shows the door
   showSelf() {
     fill(this.color, 100, 100);
     rect(this.x, this.y, this.width, this.height);
   }
+  //collision detection, for 30 seconds changes door shape to make it look like the door is opening
   collision() {
     if(collideRectRect(this.x, this.y, this.width, this.height, person.x, person.y, person.width, person.height)) {
       if (q < 30){
@@ -314,6 +328,7 @@ class VerticalDoor {
     }
 }
 
+//drawing all the vertical doors and adding them to the verticalDoorList array
 function drawVerticalDoors() {
   fill(360, 360, 360);
   door1 = new VerticalDoor(width / 4, 0);
@@ -367,6 +382,7 @@ function drawVerticalDoors() {
   verticalDoorList.push(door21);
 }
 
+//creating the horizontal doors
 class HorizontalDoor {
   constructor(i) {
     this.x = random(0, width);
@@ -375,10 +391,12 @@ class HorizontalDoor {
     this.width = 5;
     this.height = person.height;
   }
+  //showing the doors
   showSelf() {
     fill(0)
     rect(this.x, this.y, this.width, this.height);
   }
+  //checking collision of the door with the person, for 30 seconds changes door shape to make it look like the door is opening
   collision() {
     if (collideRectCircle(this.x, this.y, this.width, this.height, person.x + person.width / 2, person.y, person.width)) {
       if (p < 30){
@@ -398,6 +416,7 @@ class HorizontalDoor {
   }
 }
 
+//drawing the horizontal doors and adding them to the horizontalDoorList array
 function drawHorizontalDoors(){
   horizontalDoor1 = new HorizontalDoor(1);
   horizontalDoor2 = new HorizontalDoor(2);
@@ -414,6 +433,7 @@ function drawHorizontalDoors(){
   horizontalDoorList.push(horizontalDoor6);
 }
 
+//checking the collisions with the person and the vertical lines which represent the walls. Compares the previous x/y corrdinate with the new one to determine which direction the avatar cannot move in
 function lineCollisionVertical(){
   for (let i = 0; i < verticalDoorList.length; i++){
     if(verticalCollisionLine1 && !verticalDoorList[i].collision()){
@@ -725,6 +745,7 @@ function lineCollisionVertical(){
   }
 }
 
+//checking the collisions with the person and the vertical lines which represent the walls. Compares the previous x/y corrdinate with the new one to determine which direction the avatar cannot move in
 function lineCollisionHorizontal(){
   for (let i = 0; i < horizontalDoorList.length; i++){
     if(horizontalCollisionLine0 && !horizontalDoorList[i].collision()){
@@ -835,6 +856,7 @@ function lineCollisionHorizontal(){
   }
 }
 
+//draws in the images
 function drawImages(){
   image(handSanatizer, handSanatizerX, handSanatizerY, imageSizes, imageSizes);
   image(mask, maskX, maskY, imageSizes, imageSizes);
@@ -842,6 +864,7 @@ function drawImages(){
   image(washingHands, washingHandsX, washingHandsY, imageSizes ,imageSizes);
 }
 
+//makes sure that when the images are placed randomly the do not overlap with each other
 function collidingImages(){
   if(handSanatizerX == maskX || handSanatizerX == broomX || handSanatizerX == washingHandsX || maskX == broomX || maskX == washingHandsX || broomX == washingHandsX){
     handSanatizerX = random(0, width);
@@ -859,6 +882,7 @@ function collidingImages(){
   }
 }
 
+//checks if the person collides with the images. If so, the images are scrambled all over the house again. Also increases allowance by 1 if there is a collision.
 function personCollidingImage(){
   handSanatizerRect = collideRectRect(handSanatizerX, handSanatizerY, imageSizes, imageSizes, person.x, person.y, person.width, person.height)
   maskRect = collideRectRect(maskX, maskY, imageSizes, imageSizes, person.x, person.y, person.width, person.height)
