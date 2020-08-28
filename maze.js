@@ -3,16 +3,23 @@ function setup() {
   colorMode(HSB, 360, 100, 100);
   backgroundColor = 95;
   //currentGerm = new Germ();
+  
+  //creating a new person
   person = new Person(10, height - 20);
+  //creating the house
   house = new House();
+  
+  //keeps track of the time, allowance, and how many floors there are in the house
   time = 0;
   allowance = 0;
   numberOfFloors = 7;
 
+  //drawing house
   background(backgroundColor);
   house.drawHouse();
 
   //currentGerm.showSelf();
+  //list of all the doors that will be created
   verticalDoorList = [];
   horizontalDoorList = [];
   verticalLineCollisionsList = [];
@@ -21,20 +28,30 @@ function setup() {
   drawVerticalDoors();
   drawHorizontalDoors();
   //collisionAssignment();
+  
+  //loading in images of "allowance"
   handSanatizer = loadImage("https://cdn.glitch.com/2b73ca13-3c00-4b6d-ab47-23ab28878de2%2Fhand-sanitizer.jpg?v=1596145954217");
   mask = loadImage("https://cdn.glitch.com/2b73ca13-3c00-4b6d-ab47-23ab28878de2%2Fmask.jpg?v=1596145955087");
   broom = loadImage("https://cdn.glitch.com/2b73ca13-3c00-4b6d-ab47-23ab28878de2%2Fbroom_PNG39.png?v=1596145934959");
   washingHands = loadImage("https://cdn.glitch.com/2b73ca13-3c00-4b6d-ab47-23ab28878de2%2Fwashing%20hands.jpg?v=1596145937442");
   
   //horizontalDoor = new HorizontalDoor(1);
+  
+  //used to keep track of how long the "door" should be open for
   p = 0;
   q = 0;
+  
+  //how much the person can move forward and backwards
   forwardX = 1;
   upY = 1;
   backwardX = 1;
   downY = 1;
+  
+  //stores the previous X and Y positions of the person
   previousXPerson = 0;
   previousYPerson = 0;
+  
+  //setting up images and showing them 
   imageSizes = 30;
   handSanatizerX = random(0, width - imageSizes/2);
   handSanatizerY = random(0, height - imageSizes/2);
@@ -45,6 +62,7 @@ function setup() {
   washingHandsX = random(0, width - imageSizes/2);
   washingHandsY = random(0, height - imageSizes/2);
   
+  //runs the function colliding images to ensure that the images don't collide with each other
   collidingImages();
 }
 
