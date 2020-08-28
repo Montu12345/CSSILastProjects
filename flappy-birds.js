@@ -17,6 +17,7 @@ function setup() {
 function draw() {
   background(180, 100, 100);
   
+  //creating the green poles
   for (let i = 0; i < poleList.length; i++){
     poleList[i].showSelf();
     poleList[i].movePole();
@@ -30,6 +31,7 @@ function draw() {
   spacePressed();
   bird.moveDown();
   
+  //if the bird collides with the edge of the screen or the green pole then end the game
   if(bird.y < 10 || bird.y > height){
      gameOver();
      }
@@ -42,6 +44,7 @@ function draw() {
   
 }
 
+//class that creates the green poles
 class Pole {
   constructor() {
     this.x = width;
@@ -61,44 +64,54 @@ class Pole {
     }
   }
 
+  //show the pole
   showSelf() {
     fill(90, 100, 100);
     rect(this.x, this.y, this.xSize, this.ySize);
   }
 
+  //move the pole forwards to make it seem like the bird is moving
   movePole() {
     this.x -= poleSpeed;
   }
 }
 
+//creates a new pole object
 function newPole() {
   nextPole = new Pole();
   poleList.push(nextPole);
 }
 
+//creates the bird
 class Bird{
   constructor(){
     this.x = 50;
     this.y = height/2;
   }
+  
+  //moving the bird up and down
   moveUp(){
     this.y -= 7;
   }
   moveDown(){
     this.y += 1;
   }
+  
+  //shows the bird
   showSelf(){
     image(birdImage, this.x, this.y, 20, 20);
     
   }
 }
 
+//move the bird upwards if the space key is pressed
 function spacePressed() {
   if (keyIsDown(32)) {
     bird.moveUp();
 }
 }
 
+//creating "Game Over" image
 function gameOver(){
   background(0);
   textSize(13);
@@ -115,12 +128,14 @@ function restart(){
   loop();
 }
 
+//if "R" is pressed then the game restarts
 function keyPressed(){
   if (keyCode == 82){
     restart();
   }
 }
 
+//keeps track of time --> used to speed up the game as time goes by
 function timeCount(){
   time += 1;
   fill(0,0,0);
