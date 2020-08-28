@@ -42,11 +42,13 @@ function draw() {
   displayScore();
 }
 
+//shows the players score
 function displayScore() {
   fill(0);
   text(`Score is: ${score}`, 20, 20);
 }
 
+//creating the snake
 class Snake {
   constructor() {
     this.size = 10;
@@ -58,6 +60,7 @@ class Snake {
     this.color = random(0, 360);
   }
 
+ //how the snake moves, continuous motion
   moveSelf() {
     if (this.direction === "N") {
       this.y -= this.speed;
@@ -77,7 +80,7 @@ class Snake {
     this.tail.pop();
   }
   
-
+//shows the snake and its tail segment
   showSelf() {
     stroke(this.color, 100, 100);
     noFill();
@@ -88,6 +91,7 @@ class Snake {
     noStroke();
   }
 
+ //checks if the snake collides with the apple. If it does, create a new apple and place it in a random spot.
   checkApples() {
     if (collideRectRect(this.x, this.y, this.size, this.size, currentApple.x, currentApple.y, currentApple.size, currentApple.size)){
       score ++;
@@ -103,6 +107,7 @@ class Snake {
     }
   }
 
+ //if the snake collides with its own tail then the game ends
   checkCollisions() {
     for (let i = 1; i < this.tail.length; i++){
       if (this.x == this.tail[i].x && this.y == this.tail[i].y){
@@ -111,12 +116,14 @@ class Snake {
     }
   }
 
+ //adds a tail segment to the snake
   extendTail() {
     let lastTailSegment = this.tail[this.tail.length - 1];
     this.tail.push(new TailSegment(lastTailSegment.x, lastTailSegment.y));
   }
 }
 
+//tailsegment of the snake
 class TailSegment{
   constructor(x, y){
     this.x = x;
@@ -134,6 +141,7 @@ class TailSegment{
   }
 }
 
+//creates the apple, if placement collides with where the snake is, place the apple someplace else
 class Apple {
   constructor() {
     this.x = random(width - 10);
@@ -147,13 +155,15 @@ class Apple {
 
     this.size = 10;
   }
-
+ 
+//shows the apple
   showSelf() {
     fill(0, 80, 80);
     rect(this.x, this.y, this.size, this.size);
   }
 }
 
+//correlates the keys with the appropriate action to move the snake
 function keyPressed() {
   console.log("key pressed: ", keyCode)
   if (keyCode === UP_ARROW && playerSnake.direction != 'S') {
@@ -173,6 +183,7 @@ function keyPressed() {
   }
 }
 
+//function to restart everything and get ready for a new game
 function restartGame() {
   score = 0;
   playerSnake = new Snake();
@@ -180,6 +191,7 @@ function restartGame() {
   loop();
 }
 
+//What to do when the game is over
 function gameOver() {
   noStroke();
   text("GAME OVER", 20, 40);
